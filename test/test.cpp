@@ -2,8 +2,6 @@
 #include "ArduinoUnitTests.h"
 #include "RTClib.h"
 
-unittest(test) {
-  assertTrue(true);
-}
+unittest(test) { assertTrue(true); }
 
 unittest_main()
