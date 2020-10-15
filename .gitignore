@@ -2,3 +2,9 @@
 html
 Doxyfile*
 doxygen_sqlite3.db
+
+Gemfile.lock
+vendor/*
+*.bin
+*.bin.dSYM
+.bundle
