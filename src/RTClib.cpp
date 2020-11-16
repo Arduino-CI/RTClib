@@ -1055,7 +1055,7 @@ DateTime RTC_Micros::now() {
     @return True if Wire can find PCF8523 or false otherwise.
 */
 /**************************************************************************/
-boolean RTC_PCF8523::begin(void) {
+boolean RTC_PCF8523_Base::begin(void) {
   Wire.begin();
   Wire.beginTransmission(PCF8523_ADDRESS);
   if (Wire.endTransmission() == 0)
@@ -1074,7 +1074,7 @@ boolean RTC_PCF8523::begin(void) {
    after the bit is cleared, for instance with adjust()
 */
 /**************************************************************************/
-boolean RTC_PCF8523::lostPower(void) {
+boolean RTC_PCF8523_Base::lostPower(void) {
   return (read_i2c_register(PCF8523_ADDRESS, PCF8523_STATUSREG) >> 7);
 }
 
@@ -1085,7 +1085,7 @@ boolean RTC_PCF8523::lostPower(void) {
     @return True if the PCF8523 has been set up, false if not
 */
 /**************************************************************************/
-boolean RTC_PCF8523::initialized(void) {
+boolean RTC_PCF8523_Base::initialized(void) {
   Wire.beginTransmission(PCF8523_ADDRESS);
   Wire._I2C_WRITE((byte)PCF8523_CONTROL_3);
   Wire.endTransmission();
@@ -1101,7 +1101,7 @@ boolean RTC_PCF8523::initialized(void) {
     @param dt DateTime to set
 */
 /**************************************************************************/
-void RTC_PCF8523::adjust(const DateTime &dt) {
+void RTC_PCF8523_Base::adjust(const DateTime &dt) {
   Wire.beginTransmission(PCF8523_ADDRESS);
   Wire._I2C_WRITE((byte)3); // start at location 3
   Wire._I2C_WRITE(bin2bcd(dt.second()));
@@ -1126,7 +1126,7 @@ void RTC_PCF8523::adjust(const DateTime &dt) {
     @return DateTime object containing the current date/time
 */
 /**************************************************************************/
-DateTime RTC_PCF8523::now() {
+DateTime RTC_PCF8523_Base::now() {
   Wire.beginTransmission(PCF8523_ADDRESS);
   Wire._I2C_WRITE((byte)3);
   Wire.endTransmission();
@@ -1148,7 +1148,7 @@ DateTime RTC_PCF8523::now() {
     @brief  Resets the STOP bit in register Control_1
 */
 /**************************************************************************/
-void RTC_PCF8523::start(void) {
+void RTC_PCF8523_Base::start(void) {
   uint8_t ctlreg = read_i2c_register(PCF8523_ADDRESS, PCF8523_CONTROL_1);
   if (ctlreg & (1 << 5)) {
     write_i2c_register(PCF8523_ADDRESS, PCF8523_CONTROL_1, ctlreg & ~(1 << 5));
@@ -1160,7 +1160,7 @@ void RTC_PCF8523::start(void) {
     @brief  Sets the STOP bit in register Control_1
 */
 /**************************************************************************/
-void RTC_PCF8523::stop(void) {
+void RTC_PCF8523_Base::stop(void) {
   uint8_t ctlreg = read_i2c_register(PCF8523_ADDRESS, PCF8523_CONTROL_1);
   if (!(ctlreg & (1 << 5))) {
     write_i2c_register(PCF8523_ADDRESS, PCF8523_CONTROL_1, ctlreg | (1 << 5));
@@ -1173,7 +1173,7 @@ void RTC_PCF8523::stop(void) {
     @return 1 if the RTC is running, 0 if not
 */
 /**************************************************************************/
-uint8_t RTC_PCF8523::isrunning() {
+uint8_t RTC_PCF8523_Base::isrunning() {
   uint8_t ctlreg = read_i2c_register(PCF8523_ADDRESS, PCF8523_CONTROL_1);
   return !((ctlreg >> 5) & 1);
 }
@@ -1184,7 +1184,7 @@ uint8_t RTC_PCF8523::isrunning() {
     @return SQW pin mode as a #Pcf8523SqwPinMode enum
 */
 /**************************************************************************/
-Pcf8523SqwPinMode RTC_PCF8523::readSqwPinMode() {
+Pcf8523SqwPinMode RTC_PCF8523_Base::readSqwPinMode() {
   int mode;
 
   Wire.beginTransmission(PCF8523_ADDRESS);
@@ -1205,7 +1205,7 @@ Pcf8523SqwPinMode RTC_PCF8523::readSqwPinMode() {
     @param mode The mode to set, see the #Pcf8523SqwPinMode enum for options
 */
 /**************************************************************************/
-void RTC_PCF8523::writeSqwPinMode(Pcf8523SqwPinMode mode) {
+void RTC_PCF8523_Base::writeSqwPinMode(Pcf8523SqwPinMode mode) {
   Wire.beginTransmission(PCF8523_ADDRESS);
   Wire._I2C_WRITE(PCF8523_CLKOUTCONTROL);
   Wire._I2C_WRITE(mode << 3); // disables other timers
@@ -1218,7 +1218,7 @@ void RTC_PCF8523::writeSqwPinMode(Pcf8523SqwPinMode mode) {
     @details The INT/SQW pin will pull low for a brief pulse once per second.
 */
 /**************************************************************************/
-void RTC_PCF8523::enableSecondTimer() {
+void RTC_PCF8523_Base::enableSecondTimer() {
   // Leave compatible settings intact
   uint8_t ctlreg = read_i2c_register(PCF8523_ADDRESS, PCF8523_CONTROL_1);
   uint8_t clkreg = read_i2c_register(PCF8523_ADDRESS, PCF8523_CLKOUTCONTROL);
@@ -1235,7 +1235,7 @@ void RTC_PCF8523::enableSecondTimer() {
     @brief  Disable the Second Timer (1Hz) Interrupt on the PCF8523.
 */
 /**************************************************************************/
-void RTC_PCF8523::disableSecondTimer() {
+void RTC_PCF8523_Base::disableSecondTimer() {
   // Leave compatible settings intact
   uint8_t ctlreg = read_i2c_register(PCF8523_ADDRESS, PCF8523_CONTROL_1);
 
@@ -1258,7 +1258,7 @@ void RTC_PCF8523::disableSecondTimer() {
    low pulse. See the #PCF8523TimerIntPulse enum for options.
 */
 /**************************************************************************/
-void RTC_PCF8523::enableCountdownTimer(PCF8523TimerClockFreq clkFreq,
+void RTC_PCF8523_Base::enableCountdownTimer(PCF8523TimerClockFreq clkFreq,
                                        uint8_t numPeriods,
                                        uint8_t lowPulseWidth) {
   // Datasheet cautions against updating countdown value while it's running,
@@ -1292,7 +1292,7 @@ void RTC_PCF8523::enableCountdownTimer(PCF8523TimerClockFreq clkFreq,
     @param numPeriods The number of clkFreq periods (1-255) to count down.
 */
 /**************************************************************************/
-void RTC_PCF8523::enableCountdownTimer(PCF8523TimerClockFreq clkFreq,
+void RTC_PCF8523_Base::enableCountdownTimer(PCF8523TimerClockFreq clkFreq,
                                        uint8_t numPeriods) {
   enableCountdownTimer(clkFreq, numPeriods, 0);
 }
@@ -1310,7 +1310,7 @@ void RTC_PCF8523::enableCountdownTimer(PCF8523TimerClockFreq clkFreq,
         typically used for non-pulsed mode, user may wish to query this later.
 */
 /**************************************************************************/
-void RTC_PCF8523::disableCountdownTimer() {
+void RTC_PCF8523_Base::disableCountdownTimer() {
   // Leave compatible settings intact
   uint8_t clkreg = read_i2c_register(PCF8523_ADDRESS, PCF8523_CLKOUTCONTROL);
 
@@ -1325,7 +1325,7 @@ void RTC_PCF8523::disableCountdownTimer() {
    square wave configured with writeSqwPinMode().
 */
 /**************************************************************************/
-void RTC_PCF8523::deconfigureAllTimers() {
+void RTC_PCF8523_Base::deconfigureAllTimers() {
   disableSecondTimer(); // Surgically clears CONTROL_1
   write_i2c_register(PCF8523_ADDRESS, PCF8523_CONTROL_2, 0);
   write_i2c_register(PCF8523_ADDRESS, PCF8523_CLKOUTCONTROL, 0);
@@ -1346,7 +1346,7 @@ void RTC_PCF8523::deconfigureAllTimers() {
    values.
 */
 /**************************************************************************/
-void RTC_PCF8523::calibrate(Pcf8523OffsetMode mode, int8_t offset) {
+void RTC_PCF8523_Base::calibrate(Pcf8523OffsetMode mode, int8_t offset) {
   uint8_t reg = (uint8_t)offset & 0x7F;
   reg |= mode;
 

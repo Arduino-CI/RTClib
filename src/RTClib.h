@@ -25,6 +25,13 @@
 #include <Arduino.h>
 class TimeSpan;
 
+#if defined(ARDUINO_CI)
+#define RTC_PCF8523_CI RTC_PCF8523
+#include <WString.h>
+#else
+#define RTC_PCF8523_Base RTC_PCF8523
+#endif
+
 /** Registers */
 #define PCF8523_ADDRESS 0x68       ///< I2C address for PCF8523
 #define PCF8523_CLKOUTCONTROL 0x0F ///< Timer and CLKOUT control register
@@ -381,7 +388,7 @@ enum Pcf8523OffsetMode {
     @brief  RTC based on the PCF8523 chip connected via I2C and the Wire library
 */
 /**************************************************************************/
-class RTC_PCF8523 {
+class RTC_PCF8523_Base {
 public:
   boolean begin(void);
   void adjust(const DateTime &dt);
@@ -401,6 +408,9 @@ public:
   void disableCountdownTimer(void);
   void deconfigureAllTimers(void);
   void calibrate(Pcf8523OffsetMode mode, int8_t offset);
+#ifdef ARDUINO_CI
+  virtual String className() const { return "RTC_PCF8523_Base"; }
+#endif
 };
 
 /**************************************************************************/
