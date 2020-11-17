@@ -1,4 +1,4 @@
-#if defined(ARDUINO_CI)
+#if defined(MOCK_PINS_COUNT)
 
 #include <RTClib.h>
 #include <PCF8523_CI.h>

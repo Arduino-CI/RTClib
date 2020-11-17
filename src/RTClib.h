@@ -25,7 +25,7 @@
 #include <Arduino.h>
 class TimeSpan;
 
-#if defined(ARDUINO_CI)
+#if defined(MOCK_PINS_COUNT)
 #define RTC_PCF8523_CI RTC_PCF8523
 #include <WString.h>
 #else
@@ -408,7 +408,7 @@ public:
   void disableCountdownTimer(void);
   void deconfigureAllTimers(void);
   void calibrate(Pcf8523OffsetMode mode, int8_t offset);
-#ifdef ARDUINO_CI
+#ifdef MOCK_PINS_COUNT
   virtual String className() const { return "RTC_PCF8523_Base"; }
 #endif
 };
