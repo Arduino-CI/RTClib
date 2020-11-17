@@ -1259,8 +1259,8 @@ void RTC_PCF8523_Base::disableSecondTimer() {
 */
 /**************************************************************************/
 void RTC_PCF8523_Base::enableCountdownTimer(PCF8523TimerClockFreq clkFreq,
-                                       uint8_t numPeriods,
-                                       uint8_t lowPulseWidth) {
+                                            uint8_t numPeriods,
+                                            uint8_t lowPulseWidth) {
   // Datasheet cautions against updating countdown value while it's running,
   // so disabling allows repeated calls with new values to set new countdowns
   disableCountdownTimer();
@@ -1293,7 +1293,7 @@ void RTC_PCF8523_Base::enableCountdownTimer(PCF8523TimerClockFreq clkFreq,
 */
 /**************************************************************************/
 void RTC_PCF8523_Base::enableCountdownTimer(PCF8523TimerClockFreq clkFreq,
-                                       uint8_t numPeriods) {
+                                            uint8_t numPeriods) {
   enableCountdownTimer(clkFreq, numPeriods, 0);
 }
 

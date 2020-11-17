@@ -31,7 +31,7 @@ unittest(isValid) {
 unittest(toString) {
   DateTime dt(DATE_TIME);
   char buffer1[] = "DDD, DD MMM YYYY hh:mm:ss";
-  char* buffer2;
+  char *buffer2;
   buffer2 = dt.toString(buffer1);
   assertEqual(buffer1, buffer2);
   String s1 = String(buffer2);
@@ -107,22 +107,16 @@ unittest(timestamp) {
   assertEqual(s1, s2);
 }
 
-// DateTime DateTime::operator+	(	const TimeSpan & 	span	)	
-
-// DateTime DateTime::operator-	(	const TimeSpan & 	span	)	
-
-// TimeSpan DateTime::operator-	(	const DateTime & 	right	)	
-
-// bool DateTime::operator<	(	const DateTime & 	right	)	const
-
-// bool DateTime::operator>	(	const DateTime & 	right	)	const
-
-// bool DateTime::operator<=	(	const DateTime & 	right	)	const
-
-// bool DateTime::operator>=	(	const DateTime & 	right	)	const
-
-// bool DateTime::operator==	(	const DateTime & 	right	)	const
-
-// bool DateTime::operator!=	(	const DateTime & 	right	)	const
+/*
+DateTime DateTime::operator+(const TimeSpan& span)
+DateTime DateTime::operator-(const TimeSpan& span)
+TimeSpan DateTime::operator-(const DateTime& right)
+bool DateTime::operator<(const DateTime &right) const
+bool DateTime::operator>(const DateTime &right) const
+bool DateTime::operator<=(const DateTime &right) const
+bool DateTime::operator>=(const DateTime &right) const
+bool DateTime::operator==(const DateTime &right) const
+bool DateTime::operator!=(const DateTime &right) const
+*/
 
 unittest_main()
