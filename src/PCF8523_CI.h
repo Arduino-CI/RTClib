@@ -1,6 +1,8 @@
 #pragma once
 
-#if defined(ARDUINO_CI)
+#include <Arduino.h>
+
+#if defined(MOCK_PINS_COUNT)
 
 #include <RTClib.h>
 #include <ctime>
