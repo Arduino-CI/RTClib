@@ -1,4 +1,4 @@
-#include <PCF8523_CI.h>
+#include <RTClib_CI.h>
 
 #if defined(MOCK_PINS_COUNT)
 

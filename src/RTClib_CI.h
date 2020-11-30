@@ -7,6 +7,10 @@
 #include <RTClib.h>
 #include <ctime>
 
+/**
+ * Subclass one chip (the one used by the authors!).
+ * Other clock chips should be easy to implement as needed
+ */
 class RTC_PCF8523_CI : public RTC_PCF8523_Base {
 private:
   static bool isInitialized;
