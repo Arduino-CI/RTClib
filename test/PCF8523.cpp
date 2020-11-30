@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include <ArduinoUnitTests.h>
-#include <PCF8523_CI.h>
+#include <RTClib_CI.h>
 
 // 2020-11-15T18:30:00
 #define DATE_TIME 1605465000
