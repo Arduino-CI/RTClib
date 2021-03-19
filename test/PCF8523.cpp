@@ -16,6 +16,11 @@ unittest(test) {
   DateTime dt2 = rtc.now();
   assertTrue(dt1.unixtime() <= dt2.unixtime());
   assertTrue(dt2.unixtime() <= dt1.unixtime() + 1);
+
+  delay(5000);
+  dt2 = rtc.now();
+  assertTrue(dt1.unixtime() + 4 <= dt2.unixtime());
+  assertTrue(dt2.unixtime() <= dt1.unixtime() + 6);
 }
 
 unittest_main()

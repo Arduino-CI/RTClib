@@ -5,7 +5,6 @@
 #if defined(MOCK_PINS_COUNT)
 
 #include <RTClib.h>
-#include <ctime>
 
 /**
  * Subclass one chip (the one used by the authors!).
@@ -20,10 +19,11 @@ public:
   boolean begin() { return true; }
   void adjust(const DateTime &dt) {
     isInitialized = true;
-    offset = dt.unixtime() - std::time(0);
+    offset = dt.unixtime() - millis() / 1000;
   }
   boolean initialized() { return isInitialized; }
-  static DateTime now() { return DateTime(std::time(0) + offset); }
+  // note that this tracks the arduino_ci mock delay, not real time
+  static DateTime now() { return DateTime(offset + millis() / 1000); }
   virtual String className() const { return "RTC_PCF8523_CI"; }
 };
 
